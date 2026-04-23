@@ -7,43 +7,43 @@
 - Git
 
 ### 1. Клонирование репозитория
-\`\`\`bash
+
 git clone https://github.com/KaidorS/vik-crovlia-test.git
 cd vik-crovlia-test
-\`\`\`
+
 
 ### 2. Настройка окружения
 Скопируйте и настройте файл с переменными окружения:
-\`\`\`bash
+
 cp src/.env.example src/.env
-\`\`\`
+
 
 ### 3. Запуск контейнеров
 Соберите и запустите все сервисы:
-\`\`\`bash
+
 docker-compose up -d --build
-\`\`\`
+
 
 ### 4. Установка зависимостей PHP (Composer)
-\`\`\`bash
+
 docker-compose exec php composer install
-\`\`\`
+
 
 ### 5. Генерация ключа приложения
-\`\`\`bash
+
 docker-compose exec php php artisan key:generate
-\`\`\`
+
 
 ### 6. Установка зависимостей Node.js и сборка фронтенда
-\`\`\`bash
+
 docker-compose exec php npm install
 docker-compose exec php npm run build
-\`\`\`
+
 
 ### 7. Миграция базы данных
-\`\`\`bash
+
 docker-compose exec php php artisan migrate
-\`\`\`
+
 
 ## 🗄️ Доступ к сервисам после запуска
 - **Сайт:** [http://localhost:83](http://localhost:83)
@@ -51,9 +51,9 @@ docker-compose exec php php artisan migrate
 - **phpMyAdmin:** [http://localhost:8084](http://localhost:8084) (Сервер: `mysql`, Пользователь: `laravel`, Пароль: `secret`)
 
 ## 👤 Создание пользователя админки
-\`\`\`bash
+
 docker-compose exec php php artisan make:filament-user
-\`\`\`
+
 
 
 
@@ -70,7 +70,8 @@ docker-compose exec php php artisan make:filament-user
 5. docker-compose exec --user root php chown -R 33:33 /var/www/.npm (если папки нет создайте)
 6. docker-compose exec php npm install
 7. docker-compose exec php php artisan migrate --force
-8. docker-compose exec php npm run dev
+8. docker-compose exec php npm list tailwindcss @tailwindcss/vite
+9. docker-compose exec php npm run dev
 
 
 <h3>======= php =======</h3>

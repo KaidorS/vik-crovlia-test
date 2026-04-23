@@ -10,14 +10,15 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
-    resolve: {
-        alias: {
-            '~bootstrap': 'bootstrap',
-        },
-    },
     server: {
-        watch: {
-            ignored: ['**/storage/framework/views/**'],
+        host: '0.0.0.0',              // слушаем внутри контейнера
+        port: 5173,
+        strictPort: true,
+        cors: true,
+        origin: 'http://localhost:5173',  // <-- КЛЮЧ: подменяет URL в тегах <script>/<link>
+        hmr: {
+            host: 'localhost',            // для Hot Module Replacement
+            port: 5173,
         },
     },
 });
