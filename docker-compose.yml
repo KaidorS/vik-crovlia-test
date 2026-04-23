@@ -1,0 +1,57 @@
+services:
+  # Nginx веб-сервер
+  nginx:
+    image: nginx:alpine
+    container_name: vik_crovlia_nginx
+    ports:
+      - "83:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+      - mysql
+
+  # PHP-FPM с расширениями и инструментами
+  php:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    container_name: vik_crovlia_php
+    volumes:
+      - ./src:/var/www/html
+    environment:
+      - PHP_IDE_CONFIG=serverName=localhost
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  # MySQL база данных
+  mysql:
+    image: mysql:8.0
+    container_name: vik_crovlia_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: secret
+      MYSQL_USER: laravel
+    ports:
+      - "3309:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  # phpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: vik_crovlia_phpmyadmin
+    ports:
+      - "8084:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:
