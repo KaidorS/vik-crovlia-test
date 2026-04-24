@@ -42,6 +42,7 @@ services:
       - "3309:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    command: --performance-schema=0 --innodb-buffer-pool-size=256M
 
   # phpMyAdmin
   phpmyadmin:

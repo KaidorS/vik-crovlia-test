@@ -1,4 +1,4 @@
-# Название вашего проекта: vik-crovlia-test
+# vik-crovlia-test
 
 ## 🚀 Быстрый старт
 
@@ -71,7 +71,8 @@ docker-compose exec php php artisan make:filament-user
 6. docker-compose exec php npm install
 7. docker-compose exec php php artisan migrate --force
 8. docker-compose exec php npm list tailwindcss @tailwindcss/vite
-9. docker-compose exec php npm run dev
+9. docker-compose exec php composer require laravel-lang/lang --dev
+10. docker-compose exec php npm run dev
 
 
 <h3>======= php =======</h3>

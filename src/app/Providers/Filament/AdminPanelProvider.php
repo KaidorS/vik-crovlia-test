@@ -2,10 +2,13 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Resources\Users\UserResource;
+use BezhanSalleh\FilamentShield\Resources\Roles\RoleResource;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationItem;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -18,6 +21,7 @@ use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -54,6 +58,20 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->resources([
+                UserResource::class,
+                RoleResource::class,
+            ])
+            ->plugins([
+                FilamentShieldPlugin::make(),
+            ])
+            ->navigationItems([
+//                NavigationItem::make('Roles')
+//                    ->url('/admin/roles')
+//                    ->icon('heroicon-o-shield-check')
+//                    ->group('Shield')
+//                    ->visible(fn(): bool => auth()->user()->can('view_role')),
             ]);
     }
 }

@@ -8,6 +8,8 @@
       <sourceFolder url="file://$MODULE_DIR$/src/tests" isTestSource="true" packagePrefix="Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/src/tests/Feature" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/tests/Unit" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/blade-ui-kit/blade-heroicons" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/blade-ui-kit/blade-icons" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/brick/math" />
@@ -149,6 +151,21 @@
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/ueberdosis/tiptap-php" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/vlucas/phpdotenv" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/voku/portable-ascii" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/archtechx/enums" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/bezhansalleh/filament-plugin-essentials" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/bezhansalleh/filament-shield" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/dragon-code/contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/dragon-code/pretty-array" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/dragon-code/support" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/laravel-lang/config" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/laravel-lang/lang" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/laravel-lang/locale-list" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/laravel-lang/locales" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/laravel-lang/native-country-names" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/laravel-lang/native-currency-names" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/laravel-lang/native-locale-names" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/laravel-lang/publisher" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/spatie/laravel-permission" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

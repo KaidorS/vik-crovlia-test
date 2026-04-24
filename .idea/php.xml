@@ -153,6 +153,21 @@
       <path value="$PROJECT_DIR$/src/vendor/guzzlehttp/uri-template" />
       <path value="$PROJECT_DIR$/src/vendor/guzzlehttp/guzzle" />
       <path value="$PROJECT_DIR$/src/vendor/guzzlehttp/promises" />
+      <path value="$PROJECT_DIR$/src/vendor/spatie/laravel-permission" />
+      <path value="$PROJECT_DIR$/src/vendor/bezhansalleh/filament-shield" />
+      <path value="$PROJECT_DIR$/src/vendor/bezhansalleh/filament-plugin-essentials" />
+      <path value="$PROJECT_DIR$/src/vendor/laravel-lang/native-locale-names" />
+      <path value="$PROJECT_DIR$/src/vendor/laravel-lang/publisher" />
+      <path value="$PROJECT_DIR$/src/vendor/laravel-lang/native-country-names" />
+      <path value="$PROJECT_DIR$/src/vendor/laravel-lang/native-currency-names" />
+      <path value="$PROJECT_DIR$/src/vendor/laravel-lang/locale-list" />
+      <path value="$PROJECT_DIR$/src/vendor/laravel-lang/locales" />
+      <path value="$PROJECT_DIR$/src/vendor/laravel-lang/config" />
+      <path value="$PROJECT_DIR$/src/vendor/laravel-lang/lang" />
+      <path value="$PROJECT_DIR$/src/vendor/dragon-code/support" />
+      <path value="$PROJECT_DIR$/src/vendor/dragon-code/contracts" />
+      <path value="$PROJECT_DIR$/src/vendor/dragon-code/pretty-array" />
+      <path value="$PROJECT_DIR$/src/vendor/archtechx/enums" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.3" />
