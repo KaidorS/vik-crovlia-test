@@ -45,6 +45,18 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
+//    protected static function booted()
+//    {
+//        static::saving(function ($user) {
+//            $roleId = request()->input('role');
+//            if ($roleId) {
+//                $role = \Spatie\Permission\Models\Role::find($roleId);
+//                if ($role) {
+//                    $user->syncRoles([$role->name]);
+//                }
+//            }
+//        });
+//    }
     protected function casts(): array
     {
         return [

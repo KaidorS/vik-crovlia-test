@@ -5,26 +5,16 @@ namespace App\Filament\Resources\News;
 use App\Filament\Resources\News\Pages\CreateNews;
 use App\Filament\Resources\News\Pages\EditNews;
 use App\Filament\Resources\News\Pages\ListNews;
-use App\Filament\Resources\News\Schemas\NewsForm;
-use App\Filament\Resources\News\Tables\NewsTable;
 use App\Models\News;
+use App\Models\User;
 use BackedEnum;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Forms\Components\MarkdownEditor;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\Filter;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use App\Filament\Resources\News\Schemas\NewsForm;
+use App\Filament\Resources\News\Tables\NewsTable;
 use Illuminate\Database\Eloquent\Builder;
-use Filament\Forms\Components\DatePicker;
 
 class NewsResource extends Resource
 {
@@ -38,86 +28,12 @@ class NewsResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema
-            ->schema([
-                TextInput::make('title')
-                    ->label('Заголовок')
-                    ->required()
-                    ->maxLength(128)
-                    ->columnSpanFull(),
-
-                Textarea::make('description')
-                    ->label('Краткое описание')
-                    ->required()
-                    ->maxLength(1024)
-                    ->rows(3)
-                    ->columnSpanFull(),
-
-                MarkdownEditor::make('content')
-                    ->label('Полный контент (HTML)')
-                    ->required()
-                    ->toolbarButtons([
-                        'bold', 'italic', 'link', 'heading', 'bulletList', 'orderedList', 'codeBlock', 'blockquote', 'undo', 'redo'
-                    ])
-                    ->columnSpanFull(),
-
-                TextInput::make('author')
-                    ->label('Автор')
-                    ->required()
-                    ->maxLength(256)
-                    ->columnSpanFull(),
-            ]);
+        return NewsForm::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
-        return $table
-            ->columns([
-                TextColumn::make('id')
-                    ->label('ID')
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('title')
-                    ->label('Заголовок')
-                    ->searchable()
-                    ->toggleable()
-                    ->sortable(),
-                TextColumn::make('author')
-                    ->label('Автор')
-                    ->searchable()
-                    ->toggleable()
-                    ->sortable(),
-                TextColumn::make('created_at')
-                    ->label('Дата публикации')
-                    ->dateTime('d.m.Y H:i')
-                    ->toggleable()
-                    ->sortable(),
-            ])
-            ->persistFiltersInSession()
-            ->persistSearchInSession()
-            ->filters([
-                SelectFilter::make('author')
-                    ->label('Автор')
-                    ->options(News::distinct('author')->pluck('author', 'author')->toArray()),
-                Filter::make('created_at')
-                    ->form([
-                        DatePicker::make('from')->label('С даты'),
-                        DatePicker::make('to')->label('По дату'),
-                    ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query
-                            ->when($data['from'], fn($q) => $q->whereDate('created_at', '>=', $data['from']))
-                            ->when($data['to'], fn($q) => $q->whereDate('created_at', '<=', $data['to']));
-                    }),
-            ])
-            ->actions([
-                EditAction::make(),
-                DeleteAction::make(),
-            ])
-            ->bulkActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
-            ]);
+        return NewsTable::configure($table);
     }
 
     public static function getRelations(): array
@@ -136,6 +52,45 @@ class NewsResource extends Resource
     public static function getModelLabel(): string
     {
         return 'новость';
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+        /** @var User|null $user */
+        $user = auth()->user();
+
+        if ($user && !$user->hasAnyRole(['super_admin', 'panel_user'])) {
+            $query->where('author', $user->name);
+        }
+
+        return $query;
+    }
+
+    // Видимость пункта меню
+    public static function shouldRegisterNavigation(): bool
+    {
+        return true; // покажем всем, но фильтрация будет в таблице
+    }
+
+    // Права на создание (не-админы могут создавать)
+    public static function canCreate(): bool
+    {
+        return true; // любой авторизованный может создать новость (автор автоматически подставится)
+    }
+
+    public static function canEdit($record): bool
+    {
+        /** @var User|null $user */
+        $user = auth()->user();
+        if (!$user) return false;
+        if ($user->hasAnyRole(['super_admin', 'panel_user'])) return true;
+        return $record->author === $user->name;
+    }
+
+    public static function canDelete($record): bool
+    {
+        return static::canEdit($record);
     }
 
     public static function getPages(): array

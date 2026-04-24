@@ -2,11 +2,17 @@
 
 namespace App\Filament\Resources\News\Tables;
 
+use App\Models\News;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Forms\Components\DatePicker;
+use Illuminate\Database\Eloquent\Builder;
 
 class NewsTable
 {
@@ -14,28 +20,47 @@ class NewsTable
     {
         return $table
             ->columns([
+                TextColumn::make('id')
+                    ->label('ID')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('title')
-                    ->searchable(),
-                TextColumn::make('description')
-                    ->searchable(),
+                    ->label('Заголовок')
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
                 TextColumn::make('author')
-                    ->searchable(),
+                    ->label('Автор')
+                    ->searchable()
+                    ->toggleable()
+                    ->sortable(),
                 TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->label('Дата публикации')
+                    ->dateTime('d.m.Y H:i')
+                    ->toggleable()
+                    ->sortable(),
             ])
+            ->persistFiltersInSession()
+            ->persistSearchInSession()
             ->filters([
-                //
+                SelectFilter::make('author')
+                    ->label('Автор')
+                    ->options(News::distinct('author')->pluck('author', 'author')->toArray()),
+                Filter::make('created_at')
+                    ->form([
+                        DatePicker::make('from')->label('С даты'),
+                        DatePicker::make('to')->label('По дату'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when($data['from'], fn($q) => $q->whereDate('created_at', '>=', $data['from']))
+                            ->when($data['to'], fn($q) => $q->whereDate('created_at', '<=', $data['to']));
+                    }),
             ])
-            ->recordActions([
+            ->actions([
                 EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->toolbarActions([
+            ->bulkActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

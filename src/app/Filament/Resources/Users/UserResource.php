@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Filament\Schemas\Components\Component;
 
 class UserResource extends Resource
 {
@@ -50,6 +51,30 @@ class UserResource extends Resource
         return 'сотрудника';
     }
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->hasAnyRole(['super_admin', 'panel_user']);
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()->hasAnyRole(['super_admin', 'panel_user']);
+    }
+
+    public static function canEdit($record): bool
+    {
+        return auth()->user()->hasAnyRole(['super_admin', 'panel_user']);
+    }
+
+    public static function canDelete($record): bool
+    {
+        return auth()->user()->hasAnyRole(['super_admin', 'panel_user']);
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return static::canViewAny();
+    }
 
     public static function getPages(): array
     {
