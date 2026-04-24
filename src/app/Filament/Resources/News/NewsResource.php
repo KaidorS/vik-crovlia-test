@@ -54,19 +54,6 @@ class NewsResource extends Resource
         return 'новость';
     }
 
-    public static function getEloquentQuery(): Builder
-    {
-        $query = parent::getEloquentQuery();
-        /** @var User|null $user */
-        $user = auth()->user();
-
-        if ($user && !$user->hasAnyRole(['super_admin', 'panel_user'])) {
-            $query->where('author', $user->name);
-        }
-
-        return $query;
-    }
-
     // Видимость пункта меню
     public static function shouldRegisterNavigation(): bool
     {
@@ -79,13 +66,26 @@ class NewsResource extends Resource
         return true; // любой авторизованный может создать новость (автор автоматически подставится)
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+        /** @var User|null $user */
+        $user = auth()->user();
+
+        if ($user && !$user->hasAnyRole(['super_admin', 'panel_user'])) {
+            $query->where('user_id', $user->id);
+        }
+
+        return $query;
+    }
+
     public static function canEdit($record): bool
     {
         /** @var User|null $user */
         $user = auth()->user();
         if (!$user) return false;
         if ($user->hasAnyRole(['super_admin', 'panel_user'])) return true;
-        return $record->author === $user->name;
+        return $record->user_id === $user->id;
     }
 
     public static function canDelete($record): bool

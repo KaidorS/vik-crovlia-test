@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\News\Tables;
 
 use App\Models\News;
+use App\Models\User;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -28,7 +29,7 @@ class NewsTable
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
-                TextColumn::make('author')
+                TextColumn::make('user.name')
                     ->label('Автор')
                     ->searchable()
                     ->toggleable()
@@ -42,9 +43,10 @@ class NewsTable
             ->persistFiltersInSession()
             ->persistSearchInSession()
             ->filters([
-                SelectFilter::make('author')
+                SelectFilter::make('user_id')
                     ->label('Автор')
-                    ->options(News::distinct('author')->pluck('author', 'author')->toArray()),
+                    ->options(User::pluck('name', 'id'))
+                    ->searchable(),
                 Filter::make('created_at')
                     ->form([
                         DatePicker::make('from')->label('С даты'),
