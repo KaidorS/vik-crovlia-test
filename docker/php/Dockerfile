@@ -32,6 +32,12 @@ WORKDIR /var/www/html
 
 COPY php.ini /usr/local/etc/php/conf.d/custom.ini
 
+RUN sed -i 's/^pm.max_children = .*/pm.max_children = 20/' /usr/local/etc/php-fpm.d/www.conf || true && \
+    sed -i 's/^pm.start_servers = .*/pm.start_servers = 5/' /usr/local/etc/php-fpm.d/www.conf || true && \
+    sed -i 's/^pm.min_spare_servers = .*/pm.min_spare_servers = 3/' /usr/local/etc/php-fpm.d/www.conf || true && \
+    sed -i 's/^pm.max_spare_servers = .*/pm.max_spare_servers = 10/' /usr/local/etc/php-fpm.d/www.conf || true
+
+
 RUN chown -R www-data:www-data /var/www/html
 
 USER www-data
