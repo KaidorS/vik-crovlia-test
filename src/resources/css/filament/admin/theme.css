@@ -1,0 +1,9 @@
+@import 'tailwindcss';
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@source '../../../../app/Filament/**/*.php';
+@source '../../../../resources/views/filament/**/*.blade.php';
+@source '../../../../vendor/filament/**/*.blade.php';
+
+/* Для поддержки тёмной темы */
+@custom-variant dark (&:where(.dark, .dark *));
